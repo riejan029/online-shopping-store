@@ -2,11 +2,12 @@ import type { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { State, getAll } from "../../slice/inventorySlice";
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import CardItem from "../card-item/CardItem";
 import Grid from "@mui/material/Grid";
 import { uniqueId } from "lodash";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import React from "react";
 
 const ProductList = (): ReactElement => {
   const [searchName, setSearchName] = useState<string>("");
@@ -14,6 +15,9 @@ const ProductList = (): ReactElement => {
   const inventory = useSelector(getAll);
   const [dataList, setDataList] = useState<State[]>([]);
   const showAll: string[] = ["all", ""];
+  const sortArray = ():void => {
+    
+  }
   useEffect(() => {
     if (location !== "all")
       setDataList(inventory.filter((fil) => fil.category === location));
@@ -42,6 +46,9 @@ const ProductList = (): ReactElement => {
           value={searchName}
           sx={{ width: "50%" }}
         />
+        <Grid sx={{position:'absolute', top:140, right:100}}>
+            <Button onClick={() => sortArray()} variant="text">Sort price high to low</Button>
+        </Grid>
       </div>
 
       <Grid

@@ -5,17 +5,16 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions, Stack } from "@mui/material";
 import { CardItemProps } from "./type";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../slice/cartSlice";
 import type { State } from "../../slice/inventorySlice";
 import styled from "@mui/material/styles/styled";
 import { uniqueId } from "lodash";
+import {useDispatch} from 'react-redux'
+import { addToCart } from "../../slice/counterSlice";
 const CardItem = (props: CardItemProps): ReactElement => {
   const { data } = props;
   const dispatch = useDispatch();
   const addItemToCart = (item: State): void => {
-    console.log(item);
-    dispatch(addToCart(item));
+    dispatch(addToCart({...item, quantity:1}))
   };
 
   const StyledCard = styled(Card)(() => ({
@@ -30,7 +29,7 @@ const CardItem = (props: CardItemProps): ReactElement => {
           component="img"
           height="140"
           image={`${data.imageUrl}`}
-          alt="green iguana"
+          alt={`${data.productName}`}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

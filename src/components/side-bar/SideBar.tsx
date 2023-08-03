@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import { useState, type ReactElement } from "react";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid";
 import styled from "@mui/material/styles/styled";
 import Fab from '@mui/material/Fab';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Modal from "../modal";
 
 const StyledDrawer = styled(Drawer)(() => ({
   ["& .MuiPaper-root"]: {
@@ -23,11 +24,22 @@ const StyledDrawer = styled(Drawer)(() => ({
 const SideBar = (): ReactElement => {
   const category = [...new Set(inventory.map((item) => item.category))];
   const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const filterItem = (path: string): void => {
     navigate(path, {
       state: path.split("/")[1],
     });
   };
+
+  const handleOpenModal = ():void => {
+    setOpenModal(true);
+  }
+
+  const handleCloseModal = ():void => {
+    setOpenModal(false);
+  }
+
+
   return (
     <Grid container>
       <Grid item xs={2}>
@@ -54,14 +66,16 @@ const SideBar = (): ReactElement => {
       <Grid item xs={10}>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Grid sx={{position:'fixed', top:100, right:30}}>
-                    <Fab size="medium" color="secondary" aria-label="add" >
+                    <Fab size="medium" color="primary" aria-label="add" onClick={() => handleOpenModal()}>
                         <ShoppingCartIcon />
                     </Fab>
                 </Grid>
+                
           <Toolbar />
           <Outlet />
         </Box>
       </Grid>
+      <Modal isOpen={openModal} close={handleCloseModal} submit={handleCloseModal} />
     </Grid>
   );
 };
