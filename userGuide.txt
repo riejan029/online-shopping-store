@@ -1,0 +1,7 @@
+Hi, This is the step on how to run the application.
+    1. clone the respository 'https://github.com/riejan029/online-shopping-store.git',
+    2. go to the folder where you save the repository,
+    3. open cmd there
+    4. run 'npm install' or 'npm i'
+    5. run 'npm run dev'
+    6. open it in your browser by copying the value in 'Local' i.e Local:: http://127.0.0.1:5173

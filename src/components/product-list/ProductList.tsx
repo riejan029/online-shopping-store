@@ -6,8 +6,7 @@ import { Fragment, useEffect, useState } from "react";
 import CardItem from "../card-item/CardItem";
 import Grid from "@mui/material/Grid";
 import { uniqueId } from "lodash";
-import { Button, TextField } from "@mui/material";
-import React from "react";
+import {  Link, TextField } from "@mui/material";
 
 const ProductList = (): ReactElement => {
   const [searchName, setSearchName] = useState<string>("");
@@ -16,7 +15,7 @@ const ProductList = (): ReactElement => {
   const [dataList, setDataList] = useState<State[]>([]);
   const showAll: string[] = ["all", ""];
   const sortArray = ():void => {
-    
+    setDataList([...dataList].sort((a,b) => b.unitPrice - a.unitPrice))
   }
   useEffect(() => {
     if (location !== "all")
@@ -27,11 +26,9 @@ const ProductList = (): ReactElement => {
         inventory.filter((nameFil) => nameFil.productName.includes(searchName))
       );
   }, [location, searchName]);
-  const searchByName = (e: string): void => {
-    setSearchName(e);
-  };
+ 
   return (
-    <Fragment key={uniqueId()}>
+    <Fragment>
       <div
         style={{
           display: "flex",
@@ -42,12 +39,12 @@ const ProductList = (): ReactElement => {
       >
         <TextField
           placeholder="Search Item"
-          onChange={(e) => searchByName(e.target.value)}
+          onChange={(e) => setSearchName(e.target.value)}
           value={searchName}
           sx={{ width: "50%" }}
         />
-        <Grid sx={{position:'absolute', top:140, right:100}}>
-            <Button onClick={() => sortArray()} variant="text">Sort price high to low</Button>
+        <Grid sx={{position:'absolute', top:150, right:100}}>
+            <Link onClick={() => sortArray()} sx={{textDecoration:'none', cursor:'pointer',fontFamily:'sans-serif', fontSize:'15px', color:'black'}}>Sort price high to low</Link>
         </Grid>
       </div>
 
@@ -57,7 +54,9 @@ const ProductList = (): ReactElement => {
         sx={{ display: "flex", justifyContent: "center" }}
       >
         {dataList.map((list) => (
-          <CardItem data={list} />
+          <Fragment key={uniqueId()}>
+            <CardItem data={list} />
+          </Fragment>
         ))}
       </Grid>
     </Fragment>

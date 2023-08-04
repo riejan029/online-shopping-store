@@ -8,7 +8,7 @@ import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import React, { Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { clearCart, getCartList } from '../../slice/counterSlice';
+import { State, clearCart, getCartList } from '../../slice/counterSlice';
 import Grid from '@mui/material/Grid';
 import CartItem from '../cart-item';
 import Stack from '@mui/material/Stack';
@@ -27,6 +27,7 @@ const Modal = (props:ModalProps):ReactElement => {
     const {close,isOpen,submit} = props;
     const dispatch = useDispatch();
     const cartList = useSelector(getCartList);
+    const permaData:State[] = JSON.parse(localStorage.getItem('cartItems') || '[]');
     const clearCartList = ():void => {
         dispatch(clearCart())
     }
@@ -53,7 +54,7 @@ const Modal = (props:ModalProps):ReactElement => {
             </DialogTitle>
             <DialogContent>
             <Grid container>
-                {cartList.map((cartItem,index) => (
+                {permaData.map((cartItem,index) => (
                     <Fragment key={index}>
                         <CartItem data={cartItem} />
                     </Fragment>
@@ -62,7 +63,10 @@ const Modal = (props:ModalProps):ReactElement => {
             </DialogContent>
             
             <Stack sx={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center', padding:5}}>
-                <Typography display={'flex'} justifyContent={'flex-start'} variant='h6' fontWeight={'bold'}>Total: ₱ {new Intl.NumberFormat().format(totalPrice())}</Typography>
+                <Stack direction={'column'} gap={2}>
+                    <Typography>Total Item/s: {cartList.reduce((a,b) => a + b.quantity,0)}</Typography>
+                    <Typography justifyContent={'flex-start'} variant='h6' fontWeight={'bold'}>Total: ₱ {new Intl.NumberFormat().format(totalPrice())}</Typography>
+                </Stack>
                 <Button onClick={submit} variant='contained'>Check Out</Button>
             </Stack>
         </Dialog>
