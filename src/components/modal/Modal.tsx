@@ -36,6 +36,7 @@ const Modal = (props:ModalProps):ReactElement => {
 
     const openCheckout = ():void => {
         submit()
+        dispatch(clearCart())
         setCheckout(true)
     }
 
