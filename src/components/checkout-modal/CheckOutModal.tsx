@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react'
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import React, { Fragment } from 'react'
+import React from 'react'
 import Dialog from '@mui/material/Dialog';
 import { DialogTitle, Stack, Typography, Button, DialogActions } from '@mui/material';
 
