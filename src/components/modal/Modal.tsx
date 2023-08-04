@@ -61,7 +61,7 @@ const Modal = (props:ModalProps):ReactElement => {
             </DialogTitle>
             <DialogContent>
             <Grid container>
-                {permaData.map((cartItem,index) => (
+                {permaData.reverse().map((cartItem,index) => (
                     <Fragment key={index}>
                         <CartItem data={cartItem} />
                     </Fragment>
