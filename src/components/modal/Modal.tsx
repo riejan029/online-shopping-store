@@ -6,13 +6,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { State, clearCart, getCartList } from '../../slice/counterSlice';
 import Grid from '@mui/material/Grid';
 import CartItem from '../cart-item';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import CheckOutModal from '../checkout-modal';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -28,8 +29,14 @@ const Modal = (props:ModalProps):ReactElement => {
     const dispatch = useDispatch();
     const cartList = useSelector(getCartList);
     const permaData:State[] = JSON.parse(localStorage.getItem('cartItems') || '[]');
+    const [checkout, setCheckout] = useState<boolean>(false);
     const clearCartList = ():void => {
         dispatch(clearCart())
+    }
+
+    const openCheckout = ():void => {
+        submit()
+        setCheckout(true)
     }
 
     const totalPrice = ():number => {
@@ -67,7 +74,8 @@ const Modal = (props:ModalProps):ReactElement => {
                     <Typography>Total Item/s: {cartList.reduce((a,b) => a + b.quantity,0)}</Typography>
                     <Typography justifyContent={'flex-start'} variant='h6' fontWeight={'bold'}>Total: ₱ {new Intl.NumberFormat().format(totalPrice())}</Typography>
                 </Stack>
-                <Button onClick={submit} variant='contained'>Check Out</Button>
+                <Button onClick={openCheckout} variant='contained'>Check Out</Button>
+                <CheckOutModal isOpen={checkout} close={() => setCheckout(false)} />
             </Stack>
         </Dialog>
     )
